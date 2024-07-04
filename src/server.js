@@ -14,7 +14,7 @@ app.use(express.json());
 
 connection();
 
-// app.use(bookRouter);
+app.use(bookRouter);
 
 // addBook
 app.post("/books/addBook", async (request, response) => {
@@ -33,7 +33,17 @@ app.post("/books/addBook", async (request, response) => {
 });
 
 //update a book's author by title
-app.put("/books", (request, response) => {});
+app.put("/books", async (request, response) => {
+  console.log (request.body.title)
+  const book = await Book.updateOne({title: request.body.title}, {author: request.body.author})
+
+  const successResponse = {
+    message: "success",
+    book: book,
+  };
+
+  response.send(successResponse);
+});
 
 // delete a book by title
 app.delete("/books", async (request, response) => {
