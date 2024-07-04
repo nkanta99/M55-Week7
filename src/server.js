@@ -14,7 +14,7 @@ app.use(express.json());
 
 connection();
 
-app.use(bookRouter);
+// app.use(bookRouter);
 
 // addBook
 app.post("/books/addBook", async (request, response) => {
@@ -24,6 +24,22 @@ app.post("/books/addBook", async (request, response) => {
     genre: request.body.genre,
   });
 
+ const successResponse = {
+    message: "success",
+    book: book,
+  };
+
+  response.end(successResponse);
+});
+
+//update a book's author by title
+app.put("/books", (request, response) => {});
+
+// delete a book by title
+app.delete("/books", async (request, response) => {
+  console.log (request.body.title)
+  const book = await Book.deleteOne({title: request.body.title})
+
   const successResponse = {
     message: "success",
     book: book,
@@ -31,12 +47,6 @@ app.post("/books/addBook", async (request, response) => {
 
   response.send(successResponse);
 });
-
-//update a book's author by title
-app.put("/books", (request, response) => {});
-
-// delete a book by title
-app.delete("/books", (request, response) => {});
 
 app.listen(5001, () => {
   console.log(`Server is listening of port 5001`);
